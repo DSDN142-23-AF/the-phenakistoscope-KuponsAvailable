@@ -1,15 +1,17 @@
-const SLICE_COUNT = 12;
+const SLICE_COUNT = 24;
 let leafSize1 = 80; // Initial size of the first leaf
 let leafSize2 = 40; // Initial size of the second leaf
 
 function setup_pScope(pScope){
-  pScope.output_mode(ANIMATED_DISK);
+  pScope.output_mode(STATIC_DISK);
   pScope.scale_for_screen(true);
   pScope.draw_layer_boundaries(false);
   pScope.draw_slits(false);
-  pScope.set_direction(CCW);
+  pScope.set_direction(CW);
   pScope.set_slice_count(SLICE_COUNT);
+
   pScope.load_image("branchring", "png");
+  pScope.load_image_sequence("lemon", "png", 24);
 }
 
 function setup_layers(pScope){
@@ -28,11 +30,15 @@ function setup_layers(pScope){
   layer3.mode(RING);
   layer3.set_boundary(970,1000)
 
+  var layer4 = new PLayer(lemon);
+  layer4.mode(RING);
+  layer4.set_boundary(0,100)
+
 }
 
 function branchring(x, y, animation, pScope){
   push();
-  scale(3);
+  scale(2.5);
   if(animation.frame == 0){
     pScope.draw_image("branchring", x, y);
   }
@@ -44,26 +50,26 @@ function leaf(x, y, animation, pScope){
   scale(1.5);
 
   // First leaf
-  fill(102, 204, 0);
-  drawLeaf(200, 300, leafSize1);
+  fill(97, 153, 90);
+  drawLeaf(-230, 270, leafSize1);
 
   // Second leaf
-  fill(102, 204, 0);
-  drawLeaf(250, 300, leafSize2);
+  fill(65, 110, 59);
+  drawLeaf(200, -300, leafSize2);
 
   // Increase the size for the next frame and add noise for subtle movement
-  leafSize1 += 0.5; // Adjust growth rate for the first leaf
+  leafSize1 += 0.45; // Adjust growth rate for the first leaf
   leafSize2 += 0.3;
   
-  let leaf1Noise = noise(frameCount * 0.005) * 2 - 1; // Map noise to [-1, 1]
-  let leaf2Noise = noise((frameCount + 100) * 0.005) * 2 - 1; // Different seed for the second leaf
+  let leaf1Noise = noise(frameCount * 0.5) * 2 - 1; // Map noise to [-1, 1]
+  let leaf2Noise = noise((frameCount + 100) * 0.5) * 2 - 1; // Different seed for the second leaf
   
   // Apply noise to leaf positions
-  let leaf1X = 200 + leaf1Noise * 5;
-  let leaf1Y = 300 + leaf1Noise * 5;
+  let leaf1X = 150 + leaf1Noise * 5;
+  let leaf1Y = 280 + leaf1Noise * 5;
   
-  let leaf2X = 250 + leaf2Noise * 5;
-  let leaf2Y = 300 + leaf2Noise * 5;
+  let leaf2X = 300 + leaf2Noise * 5;
+  let leaf2Y = 280 + leaf2Noise * 5;
   
   // Draw leaves with noise-based positions
   drawLeaf(leaf1X, leaf1Y, leafSize1);
@@ -90,4 +96,9 @@ function drawLeaf(x, y, size) {
 
 function ring(x,y, animation, pScope){
   pScope.fill_background(204, 219, 182)
+}
+
+function lemon(x,y,animation,pScope){
+  scale(1);
+  pScope.draw_image_from_sequence("lemon", 550, -200, animation.frame); 
 }
