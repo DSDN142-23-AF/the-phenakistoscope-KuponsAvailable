@@ -6,6 +6,7 @@ function setup_pScope(pScope){
   pScope.output_mode(ANIMATED_DISK);
   pScope.scale_for_screen(true);
   pScope.draw_layer_boundaries(false);
+  pScope.draw_slits(false);
   pScope.set_direction(CCW);
   pScope.set_slice_count(SLICE_COUNT);
   pScope.load_image("branchring", "png");
@@ -13,7 +14,7 @@ function setup_pScope(pScope){
 
 function setup_layers(pScope){
 
-  new PLayer(null, 220);  //lets us draw the whole circle background, ignoring the boundaries
+  new PLayer(null, 19, 21, 156);  //lets us draw the whole circle background, ignoring the boundaries
 
   var layer1 = new PLayer(branchring);
   layer1.mode(RING);
@@ -22,6 +23,10 @@ function setup_layers(pScope){
   var layer2 = new PLayer(leaf);
   layer2.mode(RING);
   layer2.set_boundary(200, 1000);
+
+  var layer3 = new PLayer(ring);
+  layer3.mode(RING);
+  layer3.set_boundary(970,1000)
 
 }
 
@@ -81,4 +86,8 @@ function drawLeaf(x, y, size) {
   vertex(x, y);
   bezierVertex(x + size / 2, y - size, x - size / 2, y - size, x, y);
   endShape(CLOSE);
+}
+
+function ring(x,y, animation, pScope){
+  pScope.fill_background(204, 219, 182)
 }
